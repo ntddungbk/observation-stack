@@ -15,4 +15,4 @@ scrape_configs:
           - localhost
         labels:
           job: containerlogs
-          __path__: /var/log/docker/containers/**/*.log
+          __path__: /app/logs/*.log

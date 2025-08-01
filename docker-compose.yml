@@ -39,7 +39,7 @@ services:
     image: grafana/promtail:2.9.0
     container_name: promtail
     volumes:
-      - /var/log:/var/log
+      - ./backend/logs:/app/logs
       - /etc/machine-id:/etc/machine-id
       - ./promtail/promtail-config.yaml:/etc/promtail/config.yaml
     command: -config.file=/etc/promtail/config.yaml
