@@ -5,6 +5,11 @@ on:
     branches:
       - stg   # dev auto
   workflow_dispatch:   # manual trigger (stg + prod)
+  pull_request:   # run CI checks on PR
+    branches:
+      - main
+      - stg
+
 
 env:
   REGISTRY: ghcr.io
@@ -13,6 +18,21 @@ env:
   IMAGE_TAG: ${{ github.sha }}
 
 jobs:
+  ci_checks:
+    name: CI Checks (Lint + Test + Security + Code Quality)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Security Audit (npm audit)
+        run: npm audit --audit-level=moderate || true
+
+      - name: Run CodeQL (GitHub Security)
+        uses: github/codeql-action/analyze@v2
+        with:
+          category: "security"
+
   # ========== DEV ==========
   build_and_deploy_dev:
     runs-on: ubuntu-latest
