@@ -1,0 +1,77 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - stg   # dev auto
+  workflow_dispatch:   # manual trigger (stg + prod)
+
+env:
+  REGISTRY: ghcr.io
+  GITHUB_USERNAME: subzeromot
+  REPOSITORY: general-tao-ventures/staking-site-mono-repo
+  IMAGE_TAG: ${{ github.sha }}
+
+jobs:
+  # ========== DEV ==========
+  build_and_deploy_dev:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    environment: dev
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.ACCESS_TOKEN }}
+          submodules: true
+
+      - name: Log in to GitHub Container Registry
+        run: echo "LOGIN TO GHCR"
+
+      - name: Build Docker images
+        run: echo "BUILD DOCKER IMAGES"
+
+      - name: Push Docker images
+        run: echo "PUSH DOCKER IMAGES"
+
+      - name: Copy files to dev server
+        run: echo "COPY FILES TO DEV SERVER"
+
+      - name: Deploy to DEV
+        run: echo "DEPLOY TO DEV"
+
+  # ========== STG ==========
+  build_and_deploy_stg:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/stg'
+    environment: stg
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.ACCESS_TOKEN }}
+          submodules: true
+
+      - name: Copy files to stg server
+        run: echo "COPY FILES TO STG SERVER"
+
+      - name: Deploy to STG
+        run: echo "DEPLOY TO STG"
+
+  # ========== PROD ==========
+  build_and_deploy_prod:
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    environment: prod
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.ACCESS_TOKEN }}
+          submodules: true
+
+      - name: Copy files to prod server
+        run: echo "COPY FILES TO PROD SERVER"
+
+      - name: Deploy to PROD
+        run: echo "DEPLOY TO PROD"
