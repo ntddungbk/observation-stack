@@ -3,7 +3,7 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - stg   # dev auto
+      - main   # dev auto
   workflow_dispatch:   # manual trigger (stg + prod)
   pull_request:   # run CI checks on PR
     branches:
