@@ -3,7 +3,7 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - main   # dev auto
+      - stg   # dev auto
   workflow_dispatch:   # manual trigger (stg + prod)
 
 env:
